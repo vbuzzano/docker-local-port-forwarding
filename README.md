@@ -100,7 +100,7 @@ Have a look to docker-compose.yml
 
     docker-compose pull  
 
-#### öogs
+#### logs
 
     docker-compose logs -f  
 
@@ -126,6 +126,11 @@ Have a look to docker-compose.yml
 #### udpate container 
 
     docker pull code28tech/local-port-forwarding:latest
+
+#### logs
+
+    docker logs -f port-8180-81
+
 
 ## Links
 
