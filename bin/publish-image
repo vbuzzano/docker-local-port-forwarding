@@ -3,5 +3,13 @@
 
 cd $STACK_DIR && \
 docker-compose build && \
-docker tag code28tech/local-port-forwarding:latest code28tech/local-port-forwarding:latest && \
+
+# Tag and Publish Tag Latest
+docker tag dev-local-port-forwarding code28tech/local-port-forwarding:latest && \
 docker push code28tech/local-port-forwarding:latest
+
+# Tag and Publish Tag Version
+docker tag dev-local-port-forwarding code28tech/local-port-forwarding:${IMG_VERSION} && \
+docker push code28tech/local-port-forwarding:${IMG_VERSION}
+
+echo "Done"

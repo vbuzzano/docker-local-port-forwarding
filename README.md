@@ -1,12 +1,29 @@
-# Local Port Forwarding [ Non root]
+<code>
+
+         ██████╗ ██████╗ ██████╗ ███████╗   ██████╗  █████╗   
+        ██╔════╝██╔═══██╗██╔══██╗██╔════╝   ╚════██╗██╔══██╗  
+        ██║     ██║   ██║██║  ██║█████╗      █████╔╝╚█████╔╝  
+        ██║     ██║   ██║██║  ██║██╔══╝     ██╔═══╝ ██╔══██╗  
+        ╚██████╗╚██████╔╝██████╔╝███████╗   ███████╗╚█████╔╝  
+         ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝   ╚══════╝ ╚════╝   
+        
+                ████████╗███████╗ ██████╗██╗  ██╗  
+                ╚══██╔══╝██╔════╝██╔════╝██║  ██║  
+                   ██║   █████╗  ██║     ███████║  
+                   ██║   ██╔══╝  ██║     ██╔══██║  
+                   ██║   ███████╗╚██████╗██║  ██║  
+                   ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝  
+</code>
+# Local Port Forwarding [ Non root, Auto Reconnect ]
 
 This is a simple image to create a Local Port Forwarding 
 
 ## Features
 
-    - Non-root user.  
-    - Auto reconnect on error or connection lost
-    - Super easy to use. Just 2 mandatory env variable to define
+* Non-root user.  
+* Auto generate KeyPairs and command to publish publick key on host 
+* Auto reconnect on error or connection lost
+* Super easy to use. Just 2 mandatory env variable to define
 
 ## Environment Variable
 
@@ -37,25 +54,81 @@ ssh | define via the environment variable SSH_DIR. Its where live private key | 
 
 ## Usage
 
-Have a look to docker-compose.yml
+### Initialization
 
-### instance a port forwarding
-<code>
-  docker-compose up -d
-</code>
+Before running this image, you should run "ini" script
 
-### stop port forwarding
-<code>
-  docker-compose down
-</code>
+ssh directory is a folder where you will drop your keypairs (id_rsa, id_rsa.pub) or generate new one with ini script
 
-### update image
-<code>
-  docker-compose pull
-</code>
+    cd /path/to/my/project  
+    mkdir ssh  
 
-### see logs
-<code>
-  docker-compose logs -f
-</code>
+then
 
+    docker run --rm -i -e REMOTE_HOST=[hostname] -v /path/to/my/project/ssh:/home/code28/.ssh code28tech/local-port-forwarding ini  
+
+
+### Docker Compose
+  
+Have a look to docker-compose.yml  
+
+    version: "2.4"  
+      
+    services:  
+      
+      port_8180_81:  
+        image: code28tech/local-port-forwarding:latest  
+        container_name: "port_81_8180"  
+        restart: unless-stopped  
+        environment:  
+          - REMOTE_HOST=hostserver.ltd  
+          - REMOTE_PORT=81  
+        volumes:  
+          - $STACK_DIR/ssh:/home/code28/.ssh  
+        ports:  
+          - 8180:8180/tcp  
+
+#### Start container
+
+    docker-compose up -d  
+
+#### Stop container
+
+    docker-compose down  
+
+#### Update image
+
+    docker-compose pull  
+
+#### öogs
+
+    docker-compose logs -f  
+
+
+### Docker
+
+#### initialize container
+
+    docker run --rm -i -e REMOTE_HOST=[hostname] \  
+      -v [/path/to/my/project/ssh]:/home/code28/.ssh \  
+      code28tech/local-port-forwarding ini
+
+#### run container
+
+    docker run --rm -d -e REMOTE_PORT=81 -e REMOTE_HOST=[hostname] \
+      -v /path/to/keypairs/folder:/home/code28/.ssh -p 8180:8180 \ 
+      --name port-8180-81 code28tech/local-port-forwarding
+
+#### stop container
+
+    docker stop port-8180-81
+
+#### udpate container 
+
+    docker pull code28tech/local-port-forwarding:latest
+
+## Links
+
+- Github: https://github.com/vbuzzano/docker-local-port-forwarding
+
+- Docker Hub: https://hub.docker.com/r/code28tech/local-port-forwarding
