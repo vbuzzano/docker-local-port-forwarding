@@ -1,0 +1,15 @@
+version: "2.4"
+
+services:
+
+  port_81_8180:
+    image: code28tech/local-port-forwarding:latest
+    container_name: "port_81_8180"
+    build: .
+    environment:
+      - REMOTE_HOST=hostserver.ltd
+      - REMOTE_PORT=81
+    volumes:
+      - /home/vincent/stacks/dev/workspaces/dev.node/workspace/code28/docker-port-tunneling/ssh:/home/code28/.ssh
+    ports:
+      - 8180:8180/tcp

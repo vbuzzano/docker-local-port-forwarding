@@ -1,0 +1,7 @@
+#!/bin/bash
+. `dirname $0`/../.env
+
+cd $STACK_DIR && \
+docker-compose build && \
+docker tag code28tech/local-port-forwarding:latest code28tech/local-port-forwarding:latest && \
+docker push code28tech/local-port-forwarding:latest
