@@ -1,10 +1,10 @@
 #!/bin/bash
-. `dirname $0`/../.env
+. $(dirname $0)/../.env
 
 cd $STACK_DIR || exit
 
-`dirname $0`/tag-image
-if [ ! $? -gt 0 ]; then
+$(dirname $0)/tag-image
+if [ $? -gt 0 ]; then
   exit $?
 fi
 
