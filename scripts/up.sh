@@ -68,7 +68,7 @@ fi
 SSH_CMD="${SSH_CMD} -i ${SSH_DIR}/id_rsa ${REMOTE_USER}@${REMOTE_HOST}"
 SSH_CMD="${SSH_CMD} -L ${LOCAL_TO}:${LOCAL_PORT}:${REMOTE_TO}:${REMOTE_PORT} -N"
 
-echo "             Local Port Forwarding"
+echo "              Local Port Forwarding"
 echo "    \"${REMOTE_HOST}:${REMOTE_TO}:${REMOTE_PORT}\" --> \"${LOCAL_TO}:${LOCAL_PORT}\""
 echo "" #> ${SSH_CMD}"
 reconnectMsg="try to reconnect in ${SSH_RECONNECT_TIMEOUT} second(s)."
