@@ -1,15 +1,17 @@
 #!/bin/bash
 . `dirname $0`/../.env
 
-cd $STACK_DIR && \
-docker-compose build && \
+cd $STACK_DIR || exit
 
-# Tag and Publish Tag Latest
-docker tag dev-local-port-forwarding code28tech/local-port-forwarding:latest && \
-docker push code28tech/local-port-forwarding:latest
+`dirname $0`/tag-image
+if [ ! $? -gt 0 ]; then
+  exit $?
+fi
 
-# Tag and Publish Tag Version
-docker tag dev-local-port-forwarding code28tech/local-port-forwarding:${IMG_VERSION} && \
-docker push code28tech/local-port-forwarding:${IMG_VERSION}
+# Publish Tag Latest
+docker push code28tech/local-port-forwarding:latest || exit
+
+# Publish Tag Version
+docker push code28tech/local-port-forwarding:${IMG_VERSION} || exit
 
 echo "Done"
