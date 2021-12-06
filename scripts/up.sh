@@ -68,18 +68,19 @@ fi
 SSH_CMD="${SSH_CMD} -i ${SSH_DIR}/id_rsa ${REMOTE_USER}@${REMOTE_HOST}"
 SSH_CMD="${SSH_CMD} -L ${LOCAL_TO}:${LOCAL_PORT}:${REMOTE_TO}:${REMOTE_PORT} -N"
 
-echo "$(date) ¬> Local Port Forwarding \"${REMOTE_HOST}:${REMOTE_TO}:${REMOTE_PORT}\" --> \"${LOCAL_TO}:${LOCAL_PORT}\""
-# echo "> ${SSH_CMD}"
+echo "             Local Port Forwarding"
+echo "    \"${REMOTE_HOST}:${REMOTE_TO}:${REMOTE_PORT}\" --> \"${LOCAL_TO}:${LOCAL_PORT}\""
+echo "" #> ${SSH_CMD}"
 reconnectMsg="try to reconnect in ${SSH_RECONNECT_TIMEOUT} second(s)."
 while true; do
   $SSH_CMD &
-  pid=$! && echo "$(date --rfc-3339='seconds') ¬> Forward Port [ PID -> ${pid}" &&
+  pid=$! && echo "$(date -Iseconds) ¬> Forward Port [PID: ${pid}]" &&
     trap "kill $pid" SIGINT && wait $pid
   errcode=$?
   [ $errcode -eq 0 ] && break || [ $errcode -eq 130 ] &&
-    echo "$(date --rfc-3339='seconds') ¬> Interrupted SIGINT" && break ||
+    echo "$(date -Iseconds) ¬> Interrupted SIGINT" && break ||
     # try to connect if an error occured
-    echo "$(date --rfc-3339='seconds') ¬> Recovery: ${reconnectMsg}" &&
+    echo "$(date -Iseconds) ¬> Recovery: ${reconnectMsg}" &&
     sleep ${SSH_RECONNECT_TIMEOUT}
 done
 trap SIGINT
